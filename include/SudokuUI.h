@@ -14,14 +14,11 @@ public:
 
 private:
 
+    int chooseVisualizationMode();
     vector<vector<char>> inputBoard();
-
     vector<vector<char>> chooseSampleBoard();
-
     vector<vector<char>> getEasyBoard();
-
     vector<vector<char>> getMediumBoard();
-
     vector<vector<char>> getHardBoard();
 
     void printBoard(

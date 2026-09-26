@@ -2,6 +2,8 @@
 #include <iostream>
 #include <limits>
 #include <windows.h>
+#include <thread>
+#include <chrono>
 
 void setConsoleColor(int color) {
 
@@ -11,7 +13,12 @@ void setConsoleColor(int color) {
     );
 }
 
-SudokuSolver::SudokuSolver() : recursiveCalls(0), numbersTried(0), backtracks(0), visualizationEnabled(false) {}
+SudokuSolver::SudokuSolver()
+    : recursiveCalls(0),
+      numbersTried(0),
+      backtracks(0),
+      visualizationEnabled(false),
+      stepByStep(false) {}
 
 bool SudokuSolver::findBestCell(
     vector<vector<char>>& board,
@@ -152,7 +159,6 @@ bool SudokuSolver::isValidBoard(
             }
         }
     }
-
     return true;
 }
 
@@ -187,6 +193,10 @@ bool SudokuSolver::isSafe(
     }
 
     return true;
+}
+
+void clearConsole() {
+    system("cls");
 }
 
 void printVisualizationBoard(
@@ -255,10 +265,18 @@ bool SudokuSolver::helper(vector<vector<char>>& board) {
 
             board[bestRow][bestCol] = digit;
 
-            if(visualizationEnabled) {
-                printVisualizationBoard(board) ;
-                waitForNextStep() ;
+            if (visualizationEnabled) {
+
+                clearConsole();
+
+                printVisualizationBoard(board);
+
+                if (stepByStep) {
+                    waitForNextStep();
+                }
+                else Sleep(300);
             }
+
             if(helper(board)) return true ;
             board[bestRow][bestCol] = '.';
 
@@ -300,4 +318,7 @@ long long SudokuSolver::getBacktracks() const {
 
 void SudokuSolver::setVisualization(bool enable) {
     visualizationEnabled = enable;
+}
+void SudokuSolver::setStepByStep(bool enable) {
+    stepByStep = enable;
 }

@@ -10,7 +10,8 @@ private:
     long long recursiveCalls;
     long long numbersTried;
     long long backtracks;
-    bool visualizationEnabled ;
+    bool visualizationEnabled;
+    bool stepByStep;
 
     bool isSafe(
         vector<vector<char>>& board,
@@ -32,7 +33,8 @@ public:
     bool isValidBoard(
         const vector<vector<char>>& board
     );
-    void setVisualization(bool enabled) ;
+    void setVisualization(bool enabled);
+    void setStepByStep(bool enabled);
     long long getRecursiveCalls() const;
     long long getNumbersTried() const;
     long long getBacktracks() const;

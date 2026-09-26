@@ -49,6 +49,28 @@ void SudokuUI::printBoard(
     cout << "+------+------+------+" << endl;
 }
 
+int SudokuUI::chooseVisualizationMode() {
+
+    while (true) {
+
+        cout << "\nChoose visualization mode:" << endl;
+        cout << "1. Step-by-step" << endl;
+        cout << "2. Automatic" << endl;
+        cout << "3. Back" << endl;
+
+        cout << "\nEnter choice: ";
+
+        int choice;
+        cin >> choice;
+
+        if (choice >= 1 && choice <= 3) {
+            return choice;
+        }
+
+        cout << "\nInvalid choice. Try again." << endl;
+    }
+}
+
 vector<vector<char>> SudokuUI::inputBoard() {
 
     vector<vector<char>> board(
@@ -167,23 +189,56 @@ vector<vector<char>> SudokuUI::chooseSampleBoard() {
         cout << "\nInvalid choice. Try again." << endl;
     }
 }
+bool chooseVisualizationMode() {
+
+    while (true) {
+
+        cout << "\nChoose visualization mode:" << endl;
+        cout << "1. Step-by-step" << endl;
+        cout << "2. Automatic" << endl;
+        cout << "3. Back" << endl;
+
+        cout << "\nEnter choice: ";
+
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            return true;
+        }
+
+        if (choice == 2) {
+            return false;
+        }
+
+        if (choice == 3) {
+            return false;
+        }
+
+        cout << "\nInvalid choice. Try again." << endl;
+    }
+}
+
 void SudokuUI::solveAndDisplay(
     vector<vector<char>>& board,
     bool visualize
 ) {
 
-    SudokuSolver solver;
+SudokuSolver solver;
+solver.setVisualization(visualize);
 
-    solver.setVisualization(visualize);
-
+if (visualize) {
+    int mode = chooseVisualizationMode();
+    if (mode == 3) {
+        return;
+    }
+    solver.setStepByStep(mode == 1);
+}
     cout << "\nOriginal Sudoku:" << endl;
-
     printBoard(board);
 
     if (!solver.isValidBoard(board)) {
-
         cout << "\nInvalid Sudoku!" << endl;
-
         return;
     }
 
