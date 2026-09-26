@@ -278,12 +278,12 @@ bool SudokuSolver::helper(vector<vector<char>>& board) {
             }
 
             if(helper(board)) return true ;
-            board[bestRow][bestCol] = '.';
+          board[bestRow][bestCol] = '.';
 
             backtracks++;
 
             if (visualizationEnabled) {
-
+                clearConsole();
                 setConsoleColor(12);
 
                 cout << "Backtracking from row "
@@ -293,6 +293,15 @@ bool SudokuSolver::helper(vector<vector<char>>& board) {
                      << endl;
 
                 setConsoleColor(7);
+
+                printVisualizationBoard(board);
+
+                if (stepByStep) {
+                    waitForNextStep();
+                }
+                else {
+                    Sleep(300);
+                }
             }
 
         }
