@@ -1,112 +1,115 @@
 Sudoku Solver
 
-A C++ Sudoku Solver that uses Backtracking with the Minimum Remaining Values (MRV) heuristic to efficiently solve Sudoku puzzles.
+A C++ Sudoku solver that uses backtracking with the Minimum Remaining Values (MRV) heuristic to efficiently solve Sudoku puzzles.
 
 Features
 
-Solve standard 9×9 Sudoku puzzles
+Solve Sudoku puzzles manually entered by the user
 
-Manual Sudoku input
-
-Built-in Easy, Medium, and Hard puzzles
+Easy, Medium, and Hard sample puzzles
 
 Sudoku board validation
 
-Detects duplicate numbers in rows, columns, and 3×3 boxes
-
 Backtracking algorithm
 
-Minimum Remaining Values (MRV) heuristic
+MRV-based cell selection
 
-Recursive call statistics
+Recursive-call statistics
 
-Number-of-attempts statistics
+Numbers-tried statistics
 
 Backtracking statistics
 
 Solving-time measurement
 
-Interactive command-line menu
+Automatic solving visualization
+
+Step-by-step solving visualization
+
+Colored console output
+
+Console board refresh during visualization
 
 Project Structure
 Sudoku-Solver/
 │
 ├── include/
-│   └── SudokuSolver.h
+│   ├── SudokuSolver.h
+│   └── SudokuUI.h
 │
 ├── src/
-│   ├── main.cpp
-│   └── SudokuSolver.cpp
+│   ├── SudokuSolver.cpp
+│   ├── SudokuUI.cpp
+│   └── main.cpp
 │
-├── README.md
-└── .gitignore
+├── .gitignore
+└── README.md
 
-How It Works
+Algorithm
 
 The solver uses recursive backtracking.
 
-At every step, it:
+For each empty cell, the program:
 
-Finds an empty cell.
+Finds an empty cell with the fewest possible candidates.
 
-Determines which digits can legally be placed there.
-
-Selects the empty cell with the fewest possible digits using the MRV heuristic.
-
-Tries each valid digit.
+Tries valid digits from 1 to 9.
 
 Recursively continues solving.
 
-If a choice leads to an invalid state, the algorithm backtracks and tries another digit.
+If a choice leads to a dead end, the solver removes the choice.
 
-Minimum Remaining Values (MRV)
+It then tries another candidate.
 
-Instead of always selecting the first empty cell, the solver searches for the empty cell with the smallest number of possible values.
+The process continues until the Sudoku is solved or no solution exists.
 
-For example:
+The MRV heuristic helps reduce the search space by selecting the most constrained empty cell first.
 
-Cell A → 1, 4, 7       → 3 possibilities
-Cell B → 2, 8          → 2 possibilities
-Cell C → 6             → 1 possibility
+Visualization Modes
+
+The program provides two visualization modes.
+
+Automatic
+
+The solver automatically displays each step with a short delay.
+
+Step-by-step
+
+The solver pauses after each move and waits for the user to press Enter.
+
+Backtracking is displayed separately so the solving process can be followed in the terminal.
+
+Building
+
+This project uses a C++ compiler such as MinGW g++.
+
+From the project directory:
+
+g++ src\main.cpp src\SudokuSolver.cpp src\SudokuUI.cpp -Iinclude -o sudoku
+
+Running
+
+Run the compiled program:
+
+sudoku.exe
 
 
-The solver chooses Cell C first.
-
-This reduces unnecessary search and can significantly improve performance on difficult Sudoku puzzles.
-
-Example
-========================================
-           SUDOKU SOLVER
-========================================
+The main menu provides:
 
 1. Enter Sudoku manually
 2. Use sample Sudoku
-3. Exit
+3. Watch solver step-by-step
+4. Exit
 
-Enter choice: 2
+Sudoku Input
 
-Choose difficulty:
+When entering a Sudoku manually:
 
-1. Easy
-2. Medium
-3. Hard
-4. Back
+Use digits 1 through 9 for filled cells.
 
+Use . for empty cells.
 
-After solving, the program displays the solved board and statistics such as:
-
-================================
-       SOLVING STATISTICS
-================================
-Recursive calls : ...
-Numbers tried   : ...
-Backtracks      : ...
-Solving time    : ... microseconds
-================================
-
-Input Format
-
-Use . for an empty cell.
+Enter exactly 9 characters for each row.
 
 Example:
 
@@ -120,83 +123,41 @@ Example:
 ...419..5
 ....8..79
 
+Statistics
 
-Each row must contain exactly 9 characters using:
+After solving, the program displays:
 
-1–9 for filled cells
+Recursive calls
 
-. for empty cells
+Numbers tried
 
-Compilation
+Backtracks
 
-From the project root:
+Solving time
 
-g++ src/main.cpp src/SudokuSolver.cpp -Iinclude -o sudoku
+Example:
 
-Run
-
-On Windows:
-
-.\sudoku.exe
+================================
+       SOLVING STATISTICS
+================================
+Recursive calls : ...
+Numbers tried   : ...
+Backtracks      : ...
+Solving time    : ... microseconds (... ms)
+================================
 
 Technologies
 
 C++
 
-STL vector
+Standard Library
 
-Recursion
+Recursive Backtracking
 
-Backtracking
+MRV Heuristic
 
-Constraint checking
+Windows Console API for colored output
 
-MRV heuristic
+Author
 
-<chrono> for performance measurement
-
-Learning Objectives
-
-This project demonstrates:
-
-Object-oriented C++ programming
-
-Recursion
-
-Backtracking
-
-Constraint satisfaction
-
-Algorithm optimization
-
-Header/source file separation
-
-Basic performance analysis
-
-Command-line application design
-
-C++ project organization
-
-Future Improvements
-
-Possible future improvements include:
-
-Random Sudoku puzzle generation
-
-Graphical user interface
-
-Hint system
-
-Step-by-step solving visualization
-
-Multiple solving algorithms
-
-Unit tests
-
-Performance comparison between different solving strategies
-
-Difficulty estimation based on solving complexity
-
-License
-
-This project is available for educational and personal use.
+Chandan Sahare
