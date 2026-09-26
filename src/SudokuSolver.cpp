@@ -1,7 +1,17 @@
 #include "SudokuSolver.h"
 #include <iostream>
+#include <limits>
+#include <windows.h>
 
-SudokuSolver::SudokuSolver() : recursiveCalls(0), numbersTried(0), backtracks(0) {}
+void setConsoleColor(int color) {
+
+    SetConsoleTextAttribute(
+        GetStdHandle(STD_OUTPUT_HANDLE),
+        color
+    );
+}
+
+SudokuSolver::SudokuSolver() : recursiveCalls(0), numbersTried(0), backtracks(0), visualizationEnabled(false) {}
 
 bool SudokuSolver::findBestCell(
     vector<vector<char>>& board,
@@ -179,6 +189,40 @@ bool SudokuSolver::isSafe(
     return true;
 }
 
+void printVisualizationBoard(
+    const vector<vector<char>>& board
+) {
+
+    cout << "\n+------+------+------+" << endl;
+
+    for (int row = 0; row < 9; row++) {
+
+        for (int col = 0; col < 9; col++) {
+
+            if (col % 3 == 0) {
+                cout << "| ";
+            }
+
+            cout << board[row][col] << " ";
+
+        }
+
+        cout << "|" << endl;
+
+        if ((row + 1) % 3 == 0) {
+            cout << "+------+------+------+" << endl;
+        }
+    }
+}
+
+void waitForNextStep() {
+
+    cout << "\nPress ENTER to continue...";
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
+}
+
 bool SudokuSolver::helper(vector<vector<char>>& board) {
 
     recursiveCalls++;
@@ -187,7 +231,6 @@ bool SudokuSolver::helper(vector<vector<char>>& board) {
     int bestCol;
 
     if (!findBestCell(board, bestRow, bestCol)) {
-
         return true;
     }
 
@@ -197,18 +240,45 @@ bool SudokuSolver::helper(vector<vector<char>>& board) {
 
         if (isSafe(board, bestRow, bestCol, digit)) {
 
-            board[bestRow][bestCol] = digit;
+            if (visualizationEnabled) {
 
-            if (helper(board)) {
-                return true;
+                setConsoleColor(10);
+
+                cout << "Trying " << digit
+                     << " at row " << bestRow + 1
+                     << ", column " << bestCol + 1
+                     << endl;
+
+                setConsoleColor(7);
             }
 
+
+            board[bestRow][bestCol] = digit;
+
+            if(visualizationEnabled) {
+                printVisualizationBoard(board) ;
+                waitForNextStep() ;
+            }
+            if(helper(board)) return true ;
             board[bestRow][bestCol] = '.';
 
             backtracks++;
+
+            if (visualizationEnabled) {
+
+                setConsoleColor(12);
+
+                cout << "Backtracking from row "
+                     << bestRow + 1
+                     << ", column "
+                     << bestCol + 1
+                     << endl;
+
+                setConsoleColor(7);
+            }
+
         }
     }
-
     return false;
 }
 
@@ -226,4 +296,8 @@ long long SudokuSolver::getNumbersTried() const {
 
 long long SudokuSolver::getBacktracks() const {
     return backtracks;
+}
+
+void SudokuSolver::setVisualization(bool enable) {
+    visualizationEnabled = enable;
 }
